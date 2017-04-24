@@ -1,0 +1,36 @@
+
+Suggested steps:
+
+1) Install Anaconda (unless you already have Python)
+
+   https://www.continuum.io/downloads
+
+2) Create a virtual environment for Keras
+
+  conda create --name keras python=3
+
+3) Activate the virtual environment
+
+  source activate keras
+
+4) Install Keras (and other useful packages)
+
+  pip install -r REQUIREMENTS.txt
+
+
+5) Run existing code
+
+  python starter.py
+
+  Warnings:
+  
+   - This code was developed on MacOS, so if you are running on
+     Windows you will need to fix forward slashes to backward slashes
+     in file names
+
+6) (if possible) Switch to GPU mode.  This only applies if you have
+access to a recently released NVIDIA GPU.  This can significantly
+speed up training time.
+
+  https://keras.io/#installation
+
