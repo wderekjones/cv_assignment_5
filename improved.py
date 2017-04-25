@@ -11,8 +11,8 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.regularizers import l2
 
 import dataset
-from losses import myloss as loss 
-import metrics 
+from losses import myloss as loss
+import metrics
 
 #
 # Define training and testing set generators
@@ -25,14 +25,14 @@ testing_gen = dataset.testing(os.path.join('.','baseline'))
 # Specify the CNN
 #
 # https://keras.io/layers/convolutional/
-# 
+#
 
 # TODO experiment with different network architectures
 #
 # Things to try:
 #   - different number of convolutional layers
 #   - different kernel shapes
-#   - more or fewer filters 
+#   - more or fewer filters
 #   - different amount of regularization
 #   - set the dilation rate
 #   - pooling
@@ -46,18 +46,24 @@ testing_gen = dataset.testing(os.path.join('.','baseline'))
 #
 # Other things you could try:
 #   - different image pre processing
-#   - different optimizer settings 
+#   - different optimizer settings
 
 act = LeakyReLU(alpha=0.1) # activation function
 
 model = Sequential()
 model.add(
-        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), 
-            activation=act, padding='same', input_shape=(120, 180, 3)))
+        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004),
+            activation=act, padding='same',dilation_rate=2, input_shape=(120, 180, 3)))
 model.add(BatchNormalization(momentum=.9,scale=False))
 model.add(
         Conv2D(32, (3, 3), kernel_regularizer=l2(.0004),
-            activation=act, padding='same'))
+            activation=act, padding='same',dilation_rate=4))
+model.add(
+        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004),
+            activation=act, padding='same',dilation_rate=8))
+model.add(
+        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004),
+            activation=act, padding='same',dilation_rate=16))
 model.add(BatchNormalization(momentum=.9,scale=False))
 model.add(Conv2D(3, (3, 3), kernel_regularizer=l2(.0004),
     activation='softmax', padding='same'))
@@ -79,7 +85,7 @@ model.compile(
 
 model.fit_generator(
         training_gen,
-        epochs=5, # run this many epochs
+        epochs=50, # run this many epochs
         steps_per_epoch=20, # run this many mini batches per epoch
         validation_data=testing_gen,
         validation_steps=10 # run this many mini batches of testing data every epoch
@@ -96,7 +102,7 @@ print('Evaluation on Testing Data')
 print('Loss = {:2.3}, F-measure= {:2.3}'.format(score[0],score[1]))
 
 # visualize predictions
-# TODO move this to visualize.py 
+# TODO move this to visualize.py
 for index, (ims, labels) in enumerate(testing_gen):
 
     labels_est = model.predict_on_batch(ims)
@@ -126,7 +132,7 @@ for index, (ims, labels) in enumerate(testing_gen):
 
     #plt.pause(.1)
 
-    plt.show()
+    plt.savefig(str(index)+".png")
 
     if index == 10:
         break
