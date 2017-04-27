@@ -51,16 +51,13 @@ testing_gen = dataset.testing(os.path.join('.','baseline'))
 act = LeakyReLU(alpha=0.1) # activation function
 
 model = Sequential()
-model.add(
-        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), 
-            activation=act, padding='same', input_shape=(120, 180, 3)))
+model.add(Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), padding='same', input_shape=(120, 180, 3)))
+model.add(LeakyReLU(alpha=0.1))
 model.add(BatchNormalization(momentum=.9,scale=False))
-model.add(
-        Conv2D(32, (3, 3), kernel_regularizer=l2(.0004),
-            activation=act, padding='same'))
+model.add(Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), padding='same'))
+model.add(LeakyReLU(alpha=0.1))
 model.add(BatchNormalization(momentum=.9,scale=False))
-model.add(Conv2D(3, (3, 3), kernel_regularizer=l2(.0004),
-    activation='softmax', padding='same'))
+model.add(Conv2D(3, (3, 3), kernel_regularizer=l2(.0004), activation='softmax', padding='same'))
 
 #
 # Define the learning process
@@ -79,7 +76,7 @@ model.compile(
 
 model.fit_generator(
         training_gen,
-        epochs=5, # run this many epochs
+        epochs=1, # run this many epochs
         steps_per_epoch=20, # run this many mini batches per epoch
         validation_data=testing_gen,
         validation_steps=10 # run this many mini batches of testing data every epoch
@@ -88,6 +85,8 @@ model.fit_generator(
 # TODO save the model to the file system (it may be useful to save
 # these with different names so you can compare different models and
 # training strategies)
+
+model.save("test_0.h5")
 
 # Run evaluation metrics on 100 mini-batches of testing data
 # TODO move this to evaluation.py
@@ -124,9 +123,9 @@ for index, (ims, labels) in enumerate(testing_gen):
     plt.title('Predicted Labels')
     plt.axis('off')
 
-    #plt.pause(.1)
+    plt.pause(.1)
 
-    plt.show()
+    #plt.show()
 
     if index == 10:
         break

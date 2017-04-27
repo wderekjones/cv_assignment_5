@@ -9,15 +9,16 @@ from keras import backend as K
 # Setting class_weights = [.25,0,1] seems to do a reasonable job of
 # balancing precision and recall, thereby giving a higher f-measure
 #
-class_weights = [.25,0,1] 
-class_weights = np.array(class_weights,dtype=np.float32).reshape((1,1,1,3))
 
 #
 # weighted categorical crossentropy
 # 
 # Necessary because of imbalaced classes and "don't care" labels
 #
+
 def myloss(y_true, y_pred):
+    class_weights = [.25, 0, 1]
+    class_weights = np.array(class_weights, dtype=np.float32).reshape((1, 1, 1, 3))
 
     y_true = K.squeeze(K.cast(y_true,'int32'),-1)
     y_true = K.one_hot(y_true,num_classes=3)
@@ -31,3 +32,34 @@ def myloss(y_true, y_pred):
 
     return loss_final
 
+def myloss2(y_true, y_pred):
+    class_weights =  [.01,0,1]
+    class_weights = np.array(class_weights, dtype=np.float32).reshape((1, 1, 1, 3))
+
+    y_true = K.squeeze(K.cast(y_true,'int32'),-1)
+    y_true = K.one_hot(y_true,num_classes=3)
+    loss_prelim = K.categorical_crossentropy(y_true,y_pred)
+
+    # increase penalty on missing foreground and ignore background class
+    weight = K.sum(y_true * class_weights, axis=-1)
+
+    # apply weight and average across pixels
+    loss_final = K.mean(loss_prelim * weight, axis=[-1,-2])
+
+    return loss_final
+
+def myloss3(y_true, y_pred):
+    class_weights =  [1,0,1]
+    class_weights = np.array(class_weights, dtype=np.float32).reshape((1, 1, 1, 3))
+
+    y_true = K.squeeze(K.cast(y_true,'int32'),-1)
+    y_true = K.one_hot(y_true,num_classes=3)
+    loss_prelim = K.categorical_crossentropy(y_true,y_pred)
+
+    # increase penalty on missing foreground and ignore background class
+    weight = K.sum(y_true * class_weights, axis=-1)
+
+    # apply weight and average across pixels
+    loss_final = K.mean(loss_prelim * weight, axis=[-1,-2])
+
+    return loss_final
