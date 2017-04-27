@@ -21,6 +21,8 @@ import metrics
 training_gen = dataset.training(os.path.join('.','baseline'))
 testing_gen = dataset.testing(os.path.join('.','baseline'))
 
+
+
 #
 # Specify the CNN
 #

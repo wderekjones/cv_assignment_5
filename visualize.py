@@ -7,10 +7,10 @@ from models import *
 
 # visualize predictions
 
-def visualize_model_performance(path):
+def visualize_model_performance(path,loss):
     testing_gen = dataset.testing(os.path.join('.', 'baseline'))
 
-    model = load_model_from_disk(path)
+    model = load_model_from_disk(path,loss)
 
     for index, (ims, labels) in enumerate(testing_gen):
 
