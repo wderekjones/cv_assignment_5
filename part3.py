@@ -3,7 +3,7 @@ from models import *
 from train import train_model
 from visualize import visualize_model_performance
 
-num_epochs = 1
+num_epochs = 10
 model = model_0()
 model_path = train_model(model, "model_0_default_weights", num_epochs)
 

@@ -30,6 +30,21 @@ def starter_model():
     return model
 
 
+
+def model_0():
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), padding='same', input_shape=(120, 180, 3),dilation_rate=2))
+    model.add(LeakyReLU(alpha=0.1))
+    model.add(BatchNormalization(momentum=.9, scale=False))
+    model.add(Conv2D(32, (3, 3), kernel_regularizer=l2(.0004), padding='same',dilation_rate = 4))
+    model.add(LeakyReLU(alpha=0.1))
+    model.add(BatchNormalization(momentum=.9, scale=False))
+    model.add(Conv2D(3, (3, 3), kernel_regularizer=l2(.0004), activation='softmax', padding='same',dilation_rate=8))
+
+    return model
+
+
+'''
 def model_0():
     model = Sequential()
     model.add(
@@ -48,3 +63,4 @@ def model_0():
                      activation='softmax', padding='same'))
 
     return model
+ '''
