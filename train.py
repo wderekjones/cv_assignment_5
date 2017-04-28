@@ -1,16 +1,19 @@
 import os
-import dataset
-import metrics
+
 from keras.optimizers import Adam
 
+import dataset
+import metrics
+from losses import load_myloss
 
-def train_model(model, model_name, num_epochs,loss_f):
+
+def train_model(model, model_name, num_epochs, class_weights=None):
     training_gen = dataset.training(os.path.join('.', 'baseline'))
 
     optimizer = Adam(lr=0.001)
 
     model.compile(
-        loss=loss_f,
+        loss=load_myloss(class_weights),
         optimizer=optimizer,
         metrics=[metrics.fmeasure, metrics.precision,
                  metrics.recall])  # TODO add precision and recall, also extra: accuracy?
@@ -25,8 +28,7 @@ def train_model(model, model_name, num_epochs,loss_f):
         steps_per_epoch=20,  # run this many mini batches per epoch
     )
 
-    model_path = "saved_models/"+ model_name + ".h5"
+    model_path = "saved_models/" + model_name + ".h5"
     model.save(model_path)
 
     return model_path
-

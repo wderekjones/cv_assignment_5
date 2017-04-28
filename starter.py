@@ -78,7 +78,7 @@ model.compile(
 
 model.fit_generator(
         training_gen,
-        epochs=1, # run this many epochs
+        epochs=100, # run this many epochs
         steps_per_epoch=20, # run this many mini batches per epoch
         validation_data=testing_gen,
         validation_steps=10 # run this many mini batches of testing data every epoch

@@ -4,15 +4,16 @@ from keras.models import Sequential
 from keras.models import load_model
 from keras.regularizers import l2
 
-from losses import myloss, myloss2, myloss3
 from metrics import fmeasure
 from metrics import precision
 from metrics import recall
 
+from losses import load_myloss
 
-def load_model_from_disk(path,loss):
+def load_model_from_disk(path,class_weights):
     model = load_model(path,
-                       custom_objects={loss.__name__: loss, "fmeasure": fmeasure, "precision": precision, "recall": recall})
+                       custom_objects={load_myloss(class_weights).__name__: load_myloss(class_weights), "fmeasure": fmeasure, "precision": precision,
+                                       "recall": recall})
     return model
 
 
