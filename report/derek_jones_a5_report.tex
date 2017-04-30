@@ -2,7 +2,7 @@
 \usepackage{geometry}
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
 \usepackage[dvipsnames]{xcolor}
-
+\usepackage{graphicx}
 \usepackage{fancyvrb}
 \usepackage{verbatim}
 \usepackage{amsmath}
@@ -56,13 +56,29 @@ For part 2, the task was to perform a pixel level classification of background,f
 	The results of each of the class\_weights settings are given below:
 	\subsection*{Default Weights}
 		\verbatiminput{starter_model_p2_default_weights.txt}
+		
+		\includegraphics[scale=0.75]{starter_model_p2_default_weights_0.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_default_weights_2.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_default_weights_4.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_default_weights_6.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_default_weights_8.png} \\
+
 
 	\subsection*{Reduced Background Penalty Weights}
 		\verbatiminput{starter_model_p2_reduced_background_weights.txt}
-
+		\includegraphics[scale=0.75]{starter_model_p2_reduced_background_weights_0.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_reduced_background_weights_2.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_reduced_background_weights_4.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_reduced_background_weights_6.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_reduced_background_weights_8.png} \\
 
 	\subsection*{Balanced Penalty Weights}
 		\verbatiminput{starter_model_p2_balanced_weights.txt}
+		\includegraphics[scale=0.75]{starter_model_p2_balanced_weights_0.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_balanced_weights_2.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_balanced_weights_4.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_balanced_weights_6.png} \\
+		\includegraphics[scale=0.75]{starter_model_p2_balanced_weights_8.png} \\
 
 In terms of Precision, it can be observed that the balanced penalty weights performed the best out of the three settings. The recall measure is greatest for the reduced background penalty weights, and the F-measure is greatest for the balanced penalty weights. Therefore the balanced penalty weights are believed to be the best choice as they are near optimal in two out of the three measures. Importantly this setting of the weights is able to achieve the best performace for classifying true positives, however it does carry the lowest score for recall meaning that it may cause an increased number of positive labels as being negative, i.e. it may be more susceptible to classifying foreground pixels as background. However due to its overall performance across all measures, this seems to be a reasonable setting for later experiments described in the next section.
 
@@ -76,17 +92,44 @@ For Part 3, I implement a new network that takes the structure of the given netw
 The baseline network uses the Leaky ReLU activation ($\alpha = 0.1$). The evaluation results are given below:
 		\verbatiminput{model_0_p3_baseline_balanced_weights.txt}
 		
+		
+\includegraphics[scale=0.75]{model_0_p3_baseline_balanced_weights_0.png} \\
+\includegraphics[scale=0.75]{model_0_p3_baseline_balanced_weights_2.png} \\
+\includegraphics[scale=0.75]{model_0_p3_baseline_balanced_weights_4.png} \\
+\includegraphics[scale=0.75]{model_0_p3_baseline_balanced_weights_6.png} \\
+\includegraphics[scale=0.75]{model_0_p3_baseline_balanced_weights_8.png} \\
+
+
+		
 \subsection*{PReLU Activation}
 The first modification changes the activations in the baseline network to PReLU, otherwise known as the Parameterized Rectified Linear Unit. Similar to the Leaky ReLU, PReLU allows negative values, however rather than holding the slope of the line from $[-\infty,0]$ to be constant, the slope coefficient becomes a learned parameter. As one can observe, the network is able to achieve a significantly more impressive performance in each category versus the baseline method, including loss.
 		\verbatiminput{model_1_p3_prelu_balanced_weights.txt}
+\includegraphics[scale=0.75]{model_1_p3_prelu_balanced_weights_0.png} \\
+\includegraphics[scale=0.75]{model_1_p3_prelu_balanced_weights_2.png} \\
+\includegraphics[scale=0.75]{model_1_p3_prelu_balanced_weights_4.png} \\
+\includegraphics[scale=0.75]{model_1_p3_prelu_balanced_weights_6.png} \\
+\includegraphics[scale=0.75]{model_1_p3_prelu_balanced_weights_8.png} \\
 
 \subsection*{ELU Activation}
 The second modification changes the activations in the baseline network to the ELU, otherwise known as the Exponential Rectified Linear Unit. This variant replaces the linear function on the interval $[-\infty,0]$ with an exponential curve that curves towards 0 as steps in the negative independent variable direction are taken. As one can observe, the results using the ELU activation (default settings) achievea higher precision score as compared to the baseline implementation, however this variant fails to outperform in both recall as well as f-measure, as well as having a higher loss than the baseline method.
 		\verbatiminput{model_2_p3_elu_balanced_weights.txt}
 
+\includegraphics[scale=0.75]{model_2_p3_elu_balanced_weights_0.png} \\
+\includegraphics[scale=0.75]{model_2_p3_elu_balanced_weights_2.png} \\
+\includegraphics[scale=0.75]{model_2_p3_elu_balanced_weights_4.png} \\
+\includegraphics[scale=0.75]{model_2_p3_elu_balanced_weights_6.png} \\
+\includegraphics[scale=0.75]{model_2_p3_elu_balanced_weights_8.png} \\
+
+
+
 \subsection*{ReLU Activation}
 The third and final modification simply changes the activations to the ReLU activation. This activation does not allow for negative values to pass and instead maps the values on the interval $[-\infty,0]$ to 0, only allowing positive values to pass through an identity function. The results for this variant show a higher precision score as compared to the baseline method, however fails to improve on each of the other scores including loss. 
 		\verbatiminput{model_3_p3_relu_balanced_weights.txt}
+\includegraphics[scale=0.75]{model_3_p3_relu_balanced_weights_0.png} \\
+\includegraphics[scale=0.75]{model_3_p3_relu_balanced_weights_2.png} \\
+\includegraphics[scale=0.75]{model_3_p3_relu_balanced_weights_4.png} \\
+\includegraphics[scale=0.75]{model_3_p3_relu_balanced_weights_6.png} \\
+\includegraphics[scale=0.75]{model_3_p3_relu_balanced_weights_8.png} \\
 
 
 \section*{Conclusions}

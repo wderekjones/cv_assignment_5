@@ -7,7 +7,7 @@ from models import *
 
 # visualize predictions
 
-def visualize_model_performance(path,class_weights=None):
+def visualize_model_performance(path,class_weights=None,save_output=False):
     testing_gen = dataset.testing(os.path.join('.', 'baseline'))
 
     model = load_model_from_disk(path,class_weights)
@@ -38,6 +38,11 @@ def visualize_model_performance(path,class_weights=None):
         plt.imshow(np.argmax(labels_est[0, :, :, :], axis=-1), clim=(0.0, 2.0))
         plt.title('Predicted Labels')
         plt.axis('off')
+
+        if save_output == True:
+            output_path = path.replace(".h5","")
+            output_path = output_path.replace("saved_models/","")
+            plt.savefig("visualizations/"+output_path+"_"+str(index)+".png")
 
         plt.pause(.1)
 
