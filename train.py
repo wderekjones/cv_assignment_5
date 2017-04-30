@@ -1,11 +1,13 @@
 import os
-
-from keras.optimizers import Adam
-
 import dataset
 import metrics
-from losses import load_myloss
 
+from losses import load_myloss
+from keras.optimizers import Adam
+
+
+'''
+contains utilities related to model training process'''
 
 def train_model(model, model_name, num_epochs, class_weights=None):
     training_gen = dataset.training(os.path.join('.', 'baseline'))
