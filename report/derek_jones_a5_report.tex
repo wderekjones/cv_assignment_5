@@ -64,7 +64,9 @@ For part 2, the task was to perform a pixel level classification of background,f
 	\subsection*{Balanced Penalty Weights}
 		\verbatiminput{starter_model_p2_balanced_weights.txt}
 
-In terms of Precision, it can be observed that the balanced penalty weights performed the best out of the three settings. The recall measure is greatest for the reduced background penalty weights, and the F-measure is greatest for the default weights, while only differing by a small factor ($\simeq 0.002$). Therefore the balanced penalty weights are believed to be the best choice as they are near optimal in two out of the three measures. Importantly this setting of the weights is able to achieve the best performace for classifying true positives, however it does carry the lowest score for recall meaning that it may cause an increased number of positive labels as being negative, i.e. it may be more susceptible to classifying foreground pixels as background. However due to its overall performance across all measures, this seems to be a reasonable setting for later experiments described in the next section.
+In terms of Precision, it can be observed that the balanced penalty weights performed the best out of the three settings. The recall measure is greatest for the reduced background penalty weights, and the F-measure is greatest for the balanced penalty weights. Therefore the balanced penalty weights are believed to be the best choice as they are near optimal in two out of the three measures. Importantly this setting of the weights is able to achieve the best performace for classifying true positives, however it does carry the lowest score for recall meaning that it may cause an increased number of positive labels as being negative, i.e. it may be more susceptible to classifying foreground pixels as background. However due to its overall performance across all measures, this seems to be a reasonable setting for later experiments described in the next section.
+
+Visualizing the results shows generally poor results from each of the methods, a possible explanation being that the models required more training epochs. However in later experiments, it can be observed that the use of balanced class weights can lead the models to predicting signifcant portions of the true foreground pixels as background pixels.
 
 \section*{Part 3}
 
@@ -87,16 +89,18 @@ The third and final modification simply changes the activations to the ReLU acti
 		\verbatiminput{model_3_p3_relu_balanced_weights.txt}
 
 
-\section{Conclusions}
-\subsection{Part 2}
+\section*{Conclusions}
+\subsection*{Part 2}
 After comparing the performance of each of the class weight variants, the balanced weight variant appeared to show the most promise as it outperformed each of the other methods in terms of precision, which gives a measure of how well the network is able to distinguish true positives from false positives, and performed competitively with the default weight setting with respect to the f-measure which gives a weighted average of both precision and recall. The recall measure for the balanced weight variant was not particularly impressive, which means that the network may be classifying significantly more false negatives. However as no class weight variant was optimal in every category, the balanced class weight variant was chosen for the experiments conducted in part 3.
 
 
-\subsection{Part3}
+\subsection*{Part3}
 In this section 4 networks were trained and compared in order to understand how changes in the activation functions affect performance during training and testing. Each network keeps the same structure, which is primarily the same as the provided model, with the addition of cascading dilation factors in the convolutional layers. A baseline method was defined to be precisely of the form just defined, with the same activation function as the provdided example network, the Leaky ReLU. Three additional variants were introduced with distinct activations. After evaluating each of the variants for 50 epochs, the model variant with the PReLU activation outperformed each of the other methods in terms of recall, f-measure, and loss, while perfoming competitively in terms of precision. The conclusion of this set of experiments suggests that the PReLU activation function, with respect to this network  architecture, is the optimal activation for the task of pixel level classification.
 
 
 \section*{Appendix}
+\subsection*{Definitions}
+In the report, several terms relating to classifier performance were used, the formal definitions of the terms are given below:
 \begin{equation}
 Precision: ~ P = \frac{\sum TP}{\sum TP + FP}
 \end{equation}
@@ -108,6 +112,24 @@ Recall: ~ R = \frac{\sum TP}{\sum TP + FN}
 \begin{equation}
 F-measure: ~ F1 = 2*\frac{P*R}{P + R}
 \end{equation}
+\newline
 
+\subsection*{Implementation Details}
+A description of each of the files and directories related to the implementation of this report are provided below: 
+
+\begin{itemize}
+	\item /saved\_models: directory containing the .h5 files of previously trained models
+	\item /report: directory containing this report
+	\item evaluation\_results: directory containing evaluation results
+	\item /baseline: directory containing testing/training data
+	\item \emph{evaluate.py}: contains code related to model evaluation
+	\item \emph{models.py}: contains various helper functions related to model definition and recovery.
+	\item \emph{part2.py}: contains source related to part 2 implementation
+	\item \emph{part3.py}: contains source related to part 3 implementation
+	\item \emph{quick\_evaluate.py}: script that takes command line arguments to model files and evaluates their performance. A second argument specifies whether to print output or write to file.
+	\item \emph{quick\_visualize.py}: script that takes command line arguments to model files and visualizes their performance.
+	\item \emph{train.py}: contains source related to model training.
+	\item \emph{visualize.py}: contains source code related to model performance visualization.
+\end{itemize}
 
 \end{document}
