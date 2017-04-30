@@ -1,6 +1,6 @@
 # cv_assignment_5: Pixel Level Classification
 
-This directory contains source to perform a pixel level classification as specified
+This directory contains source to perform a pixel level classification of foreground versus background as specified
 in the assignment.
 
 * /saved_models: directory containing the .h5 files of previously trained models
