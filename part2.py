@@ -3,17 +3,18 @@ from models import *
 from train import train_model
 from visualize import visualize_model_performance
 
-num_epochs = 1
+num_epochs = 50
 
 model = starter_model()
 
-default_model_path = train_model(model, "default_weights", num_epochs)
+default_model_path = train_model(model, str(model.name)+"_p2_default_weights", num_epochs)
+
+reduced_background_path = train_model(model, str(model.name)+"_p2_reduced_background_weights", num_epochs, [.01, 0, 1])
+
+balanced_path = train_model(model, str(model.name)+"_p2_balanced_weights", num_epochs, [1, 0, 1])
+
 evaluate_model(default_model_path)
-
-reduced_background_path = train_model(model, "reduced_background_weights", num_epochs, [.01, 0, 1])
 evaluate_model(reduced_background_path, [.01, 0, 1])
-
-balanced_path = train_model(model, "balanced_weights", num_epochs, [1, 0, 1])
 evaluate_model(balanced_path, [1, 0, 1])
 
 visualize_model_performance(default_model_path)

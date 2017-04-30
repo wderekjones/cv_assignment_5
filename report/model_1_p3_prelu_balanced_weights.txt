@@ -1,0 +1,2 @@
+Evaluation on Testing Data
+Loss = 0.151, F-measure= 0.853, Precision = 0.8, Recall = 0.915
